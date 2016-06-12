@@ -16,3 +16,9 @@ The tooltip was also working well.
 
 I did not succeed in making the so called text input filters to work: contract, grade and the last name initial.
 I did not manage to publish on shinyapps.io, as the server appears to refuse to run my code as it goes immediately gray.
+
+This the message that appears 
+
+Warning in validateSelected(selected, choices, inputId) :
+  'selected' must be the values instead of names of 'choices' for the input 'yvar'
+Warning: Error in eval: could not find function "%like%"
