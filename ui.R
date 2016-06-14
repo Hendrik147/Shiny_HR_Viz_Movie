@@ -14,27 +14,27 @@ shinyUI(fluidPage(
     column(3,
       wellPanel(
         h4("Filter"),
-        sliderInput("flexi.leave.2015", "Flexileave 2015", 0, 14, 0, step = 1),
-        sliderInput("certified.sickleave.2015", "Certified sickleave 2015", 0, 230, 0, step = 1),
-        sliderInput("uncertified.sickleave.2015", "Uncertified sickleave 2015", 0, 13, 0, step = 1),
-        sliderInput("days.not.recorded.2015", "Days not recorded 2015", 0, 110, 0, step = 10),
-        sliderInput("excess.2015", "Excess 2015", -100, 1500, 0, step = 50),
+        sliderInput("flexileave2015", "Flexileave 2015", 0, 14, 0, step = 1),
+        sliderInput("certifiedsickleave2015", "Certified sickleave 2015", 0, 230, 0, step = 1),
+        sliderInput("uncertifiedsickleave2015", "Uncertified sickleave 2015", 0, 13, 0, step = 1),
+        sliderInput("daysnotrecorded2015", "Days not recorded 2015", 0, 110, 0, step = 10),
+        sliderInput("excess2015", "Excess 2015", -100, 1500, 0, step = 50),
         
-        selectInput("name.of.EE.subgroup", "Contract",
+        selectInput("contract", "Contract",
           c("All", "Temporary Agent", "Contract Agent", "National Expert", "Interim")),
         
-        selectInput("pay.Scale.Group", "Grade",
+        selectInput("grade", "Grade",
                     c("All", "AD05","AD06","AD07","AD08","AD09","AD10","AD11","AD12","AD13",
                       "AD14","AD15","AST01","AST02","AST03","AST04","AST05","AST06","AST07",
                       "AST08","AST09","AST10","FGII.04","FGII.05","FGII.06","FGIII.08","FGIII.09","FGIII.10",
                       "FGIV.13","FGIV.14","FGIV.16","FGIV.18","SNE")),
         
-        textInput("personnel.Number..P.", "SAP Personnelnumber"),
-        textInput("last.Name", "Initial of Last Name")
+        textInput("number", "SAP Personnelnumber"),
+        textInput("last", "Initial of Last Name")
       ),
       wellPanel(
-        selectInput("xvar", "X-axis variable", axis_vars, selected = "Flexileave 2015"),
-        selectInput("yvar", "Y-axis variable", axis_vars, selected = "Uncertified sickleave 2015"),
+        selectInput("xvar", "X-axis variable", axis_vars, selected = "Flexileave2015"),
+        selectInput("yvar", "Y-axis variable", axis_vars, selected = "Uncertifiedsickleave2015"),
       tags$small(paste0(
         "Note: AD and AST are Temporary agent grades.",
         " FG are Contract agent grades.",
@@ -53,3 +53,4 @@ shinyUI(fluidPage(
     )
   )
 ))
+
