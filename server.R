@@ -5,54 +5,56 @@ if (FALSE) library(RSQLite)
 
 setwd("~/Developing Data Science Products/EMA")
 
-base <- read.csv("REPORT_RESULTa.csv", sep=";")
-base15 <- read.csv("REPORT_RESULT 2015a.csv", sep=";")
+base <- read.csv("~/Developing Data Science Products/EMA/REPORT_RESULTa.csv", sep=";")
+base15 <- read.csv("~/Developing Data Science Products/EMA/REPORT_RESULT 2015a.csv", sep=";")
 all_flexitimes <- merge(base, base15, by = "Personnel.Number..P.", all.x=TRUE)
+colnames(all_flexitime) <- c("Number", "First", "Last", "Contract", "Grade", "Flexileave2015", "Certifiedsickleave2015", "Uncertifiedsickleave2015", "Daysnotrecorded2015", "Excess2015")
+
 
 shinyServer(function(input, output, session) {
 
   # Filter staff, returning a data frame
   flexitimes <- reactive({
     # Due to dplyr issue #318, we need temp variables for input values
-    flexi.leave.2015 <- input$flexi.leave.2015
-    certified.sickleave.2015 <- input$certified.sickleave.2015
-    uncertified.sickleave.2015 <- input$uncertified.sickleave.2015
-    days.not.recorded.2015 <- input$days.not.recorded.2015
-    excess.2015 <- input$excess.2015
+    flexileave2015 <- input$flexileave2015
+    certifiedsickleave2015 <- input$certifiedsickleave2015
+    uncertifiedsickleave2015 <- input$uncertifiedsickleave2015
+    daysnotrecorded2015 <- input$daysnotrecorded2015
+    excess2015 <- input$excess2015
   
     # Apply filters
     m <- all_flexitimes %>%
       filter(
-        Flexi.leave.2015 >= flexi.leave.2015,
-        Certified.sickleave.2015 >= certified.sickleave.2015,
-        Uncertified.sickleave.2015 >= uncertified.sickleave.2015,
-        Days.not.recorded.2015 >= days.not.recorded.2015,
-        Excess.2015 >= excess.2015
+        Flexileave2015 >= flexileave2015,
+        Excess2015 >= excess2015,
+        Certifiedsickleave2015 >= certifiedsickleave2015,
+        Uncertifiedsickleave2015 >= uncertifiedsickleave2015,
+        Daysnotrecorded2015 >= daysnotrecorded2015
         
       ) %>%
-      arrange(Pay.Scale.Group)
+    arrange(Flexileave2015)
     
-    # Optional: filter by Name.of.EE.subgroup
-    if (input$name.of.EE.subgroup != "All") {
-      name.of.EE.subgroup <- paste0("%", input$name.of.EE.subgroup, "%")
-      m <- m %>% filter(Name.of.EE.subgroup %like% name.of.EE.subgroup)
+    # Optional: filter by Contract
+    if (input$contract != "All") {
+      contract <- paste0("%", input$contract, "%")
+      m <- m %>% filter(Contract %like% contract)
     }
-    # Optional: filter by Pay.Scale.Group
-    if (input$pay.Scale.Group != "All") {
-      pay.Scale.Group <- paste0("%", input$pay.Scale.Group, "%")
-      m <- m %>% filter(Pay.Scale.Group %like% pay.Scale.Group)
-    }
-    
-    # Optional: filter by Personnel.Number..P.
-    if (!is.null(input$personnel.Number..P.) && input$personnel.Number..P. != "") {
-      personnel.Number..P. <- paste0("%", input$personnel.Number..P., "%")
-      m <- m %>% filter(Personnel.Number..P. %like% personnel.Number..P.)
+    # Optional: filter by Grade
+    if (input$grade != "All") {
+      grade <- paste0("%", input$grade, "%")
+      m <- m %>% filter(Grade %like% grade)
     }
     
-    # Optional: filter by Last.Name
-    if (!is.null(input$last.Name) && input$last.Name != "") {
-      last.Name <- paste0("%", input$last.Name, "%")
-      m <- m %>% filter(Last.Name %like% last.Name)
+    # Optional: filter by Number
+    if (!is.null(input$number) && input$number != "") {
+      number <- paste0("%", input$number, "%")
+      m <- m %>% filter(Number %like% number)
+    }
+    
+    # Optional: filter by Last Name
+    if (!is.null(input$last) && input$last != "") {
+      last <- paste0("%", input$last, "%")
+      m <- m %>% filter(Last %like% last)
     }
   m <- as.data.frame(m)
   m
@@ -61,15 +63,15 @@ shinyServer(function(input, output, session) {
   # Function for generating tooltip text
   flexitime_tooltip <- function(x) {
     if (is.null(x)) return(NULL)
-    if (is.null(x$Personnel.Number..P.)) return(NULL)
+    if (is.null(x$Number)) return(NULL)
 
-    # Pick out the staff with this Personnel.Number..P.
+    # Pick out the staff with this Number
     all_flexitimes <- isolate(flexitimes())
-    flexitime <- all_flexitimes[all_flexitimes$Personnel.Number..P. == x$Personnel.Number..P., ]
+    flexitime <- all_flexitimes[all_flexitimes$Number == x$Number, ]
 
-    paste0("<b>", flexitime$First.Name, flexitime$Last.Name, "</b><br>",
-      flexitime$Pay.Scale.Group, "<br>",
-      flexitime$Name.of.EE.subgroup
+    paste0("<b>", flexitime$First, flexitime$Last, "</b><br>",
+      flexitime$Grade, "<br>",
+      flexitime$Contract
       )
   }
 
@@ -88,7 +90,7 @@ shinyServer(function(input, output, session) {
       ggvis(x = xvar, y = yvar) %>%
       layer_points(size := 50, size.hover := 200,
         fillOpacity := 0.2, fillOpacity.hover := 0.5,
-        key := ~ Personnel.Number..P.) %>%
+        key := ~ Number) %>%
       add_tooltip(flexitime_tooltip, "hover") %>%
       add_axis("x", title = xvar_name) %>%
       add_axis("y", title = yvar_name) %>%
@@ -99,3 +101,4 @@ shinyServer(function(input, output, session) {
 
   output$n_flexitimes <- renderText({ nrow(flexitimes()) })
 })
+
