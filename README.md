@@ -22,3 +22,18 @@ This the message that appears
 Warning in validateSelected(selected, choices, inputId) :
   'selected' must be the values instead of names of 'choices' for the input 'yvar'
 Warning: Error in eval: could not find function "%like%"
+
+I have no a new warning message:
+
+Warning: Error in eval: object 'Flexileave2015' not found
+and I believe it has to do with the missing link between the server file and the initial all_flexitime file.
+
+The following stackoverflow post seems the most matching one to my problem:
+http://stackoverflow.com/questions/28483389/r-shiny-error-object-input-not-found
+
+I also found a video from Jonathan McPherson where he explains the debugging techniques:
+https://www.rstudio.com/resources/webinars/shiny-developer-conference/
+
+
+
+
