@@ -19,12 +19,6 @@ I did not manage to publish on shinyapps.io, as the server appears to refuse to 
 
 This the message that appears 
 
-Warning in validateSelected(selected, choices, inputId) :
-  'selected' must be the values instead of names of 'choices' for the input 'yvar'
-Warning: Error in eval: could not find function "%like%"
-
-I have no a new warning message:
-
 Warning: Error in eval: object 'Flexileave2015' not found
 and I believe it has to do with the missing link between the server file and the initial all_flexitime file.
 
