@@ -20,7 +20,7 @@ I did not manage to publish on shinyapps.io, as the server appears to refuse to 
 This the message that appears 
 
 Warning: Error in eval: object 'Flexileave2015' not found
-and I believe it has to do with the missing link between the server file and the initial all_flexitime file.
+and I believe it has to do with the missing link between the server file and the initial all_flexitime data frame.
 
 The following stackoverflow post seems the most matching one to my problem:
 http://stackoverflow.com/questions/28483389/r-shiny-error-object-input-not-found
