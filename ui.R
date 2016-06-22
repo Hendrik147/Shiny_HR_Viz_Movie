@@ -21,13 +21,10 @@ shinyUI(fluidPage(
         sliderInput("excess2015", "Excess 2015", -100, 1500, 0, step = 50),
         
         selectInput("contract", "Contract",
-          c("All", "Temporary Agent", "Contract Agent", "National Expert", "Interim")),
+          c("All", sort(unique(all_flexitimes$Contract)))),
         
         selectInput("grade", "Grade",
-                    c("All", "AD05","AD06","AD07","AD08","AD09","AD10","AD11","AD12","AD13",
-                      "AD14","AD15","AST01","AST02","AST03","AST04","AST05","AST06","AST07",
-                      "AST08","AST09","AST10","FGII.04","FGII.05","FGII.06","FGIII.08","FGIII.09","FGIII.10",
-                      "FGIV.13","FGIV.14","FGIV.16","FGIV.18","SNE")),
+                    c("All", sort(unique(all_flexitimes$Grade)))),
         
         textInput("number", "SAP Personnelnumber"),
         textInput("last", "Initial of Last Name")
@@ -53,4 +50,3 @@ shinyUI(fluidPage(
     )
   )
 ))
-
