@@ -7,6 +7,8 @@ axis_vars <- c(
 "Excess 2015" = "Excess2015"
 )
 
+all_flexitimes <- readRDS("all_flexitimes.Rdata")
+
 
 
 
