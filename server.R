@@ -1,15 +1,6 @@
 library(ggvis)
 library(dplyr)
-
-if (FALSE) library(RSQLite)
-
-setwd("~/Developing Data Science Products/EMA")
-
-base <- read.csv("~/Developing Data Science Products/EMA/REPORT_RESULTa.csv", sep=";")
-base15 <- read.csv("~/Developing Data Science Products/EMA/REPORT_RESULT 2015a.csv", sep=";")
-all_flexitimes <- merge(base, base15, by = "Personnel.Number..P.", all.x=TRUE)
-colnames(all_flexitime) <- c("Number", "First", "Last", "Contract", "Grade", "Flexileave2015", "Certifiedsickleave2015", "Uncertifiedsickleave2015", "Daysnotrecorded2015", "Excess2015")
-
+library(data.table)
 
 shinyServer(function(input, output, session) {
 
@@ -36,25 +27,25 @@ shinyServer(function(input, output, session) {
     
     # Optional: filter by Contract
     if (input$contract != "All") {
-      contract <- paste0("%", input$contract, "%")
-      m <- m %>% filter(Contract %like% contract)
+      #contract <- paste0("%", input$contract, "%")
+      m <- m %>% filter(Contract == input$contract)
     }
     # Optional: filter by Grade
     if (input$grade != "All") {
       grade <- paste0("%", input$grade, "%")
-      m <- m %>% filter(Grade %like% grade)
+      m <- m %>% filter(Grade == input$grade)
     }
     
     # Optional: filter by Number
     if (!is.null(input$number) && input$number != "") {
       number <- paste0("%", input$number, "%")
-      m <- m %>% filter(Number %like% number)
+      m <- m %>% filter(Number == input$number)
     }
     
     # Optional: filter by Last Name
     if (!is.null(input$last) && input$last != "") {
       last <- paste0("%", input$last, "%")
-      m <- m %>% filter(Last %like% last)
+      m <- m %>% filter(Last == input$last)
     }
   m <- as.data.frame(m)
   m
@@ -101,4 +92,3 @@ shinyServer(function(input, output, session) {
 
   output$n_flexitimes <- renderText({ nrow(flexitimes()) })
 })
-
